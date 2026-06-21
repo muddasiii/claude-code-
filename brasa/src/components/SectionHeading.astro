@@ -1,0 +1,20 @@
+---
+interface Props {
+  eyebrow?: string;
+  /** May contain inline HTML (e.g. a <span class="text-brass">) */
+  title: string;
+  align?: "left" | "center";
+  class?: string;
+}
+const { eyebrow, title, align = "left", class: className = "" } = Astro.props;
+const wrap =
+  align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl";
+---
+
+<div class={`${wrap} ${className}`}>
+  {eyebrow && <p data-reveal class="eyebrow mb-4">{eyebrow}</p>}
+  <h2 data-reveal data-reveal-delay="1" class="display text-[2.1rem] leading-[1.05] sm:text-5xl">
+    <Fragment set:html={title} />
+  </h2>
+  <slot />
+</div>

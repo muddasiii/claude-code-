@@ -1,0 +1,106 @@
+---
+// Demo private-events inquiry form — client-side confirmation only.
+// To go live: POST to your CRM / email service.
+const field =
+  "w-full rounded-sm border border-smoke bg-ash/60 px-4 py-3 text-bone placeholder:text-bone-mute/50 transition-colors duration-300 focus:border-brass focus:outline-none";
+const label =
+  "mb-2 block font-mono text-[0.68rem] uppercase tracking-[0.18em] text-bone-mute";
+const chevron =
+  "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-bone-mute";
+
+const types = [
+  "Private Dining Room",
+  "Corporate Dinner",
+  "Wedding & Celebration",
+  "Full Restaurant Buyout",
+  "Off-Site Catering",
+];
+---
+
+<div class="relative">
+  <form id="event-form" novalidate class="grid gap-6 sm:grid-cols-2">
+    <div>
+      <label class={label} for="e-name">Full name</label>
+      <input class={field} id="e-name" name="name" type="text" autocomplete="name" required placeholder="Jane Doe" />
+    </div>
+    <div>
+      <label class={label} for="e-company">Company <span class="lowercase tracking-normal">(optional)</span></label>
+      <input class={field} id="e-company" name="company" type="text" autocomplete="organization" placeholder="Company / host" />
+    </div>
+    <div>
+      <label class={label} for="e-email">Email</label>
+      <input class={field} id="e-email" name="email" type="email" autocomplete="email" required placeholder="you@email.com" />
+    </div>
+    <div>
+      <label class={label} for="e-phone">Phone</label>
+      <input class={field} id="e-phone" name="phone" type="tel" autocomplete="tel" required placeholder="(305) 555-0142" />
+    </div>
+
+    <div class="relative">
+      <label class={label} for="e-type">Event type</label>
+      <select class={`${field} appearance-none pr-10`} id="e-type" name="type" required>
+        {types.map((t) => <option value={t}>{t}</option>)}
+      </select>
+      <svg class={chevron} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class={label} for="e-date">Preferred date</label>
+        <input class={field} id="e-date" name="date" type="date" required />
+      </div>
+      <div>
+        <label class={label} for="e-guests">Guests</label>
+        <input class={field} id="e-guests" name="guests" type="number" min="8" max="300" required placeholder="20" />
+      </div>
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class={label} for="e-message">Tell us about your event</label>
+      <textarea class={`${field} resize-none`} id="e-message" name="message" rows="4" required placeholder="Occasion, vibe, food & beverage ideas, budget range…"></textarea>
+    </div>
+
+    <p id="e-error" class="hidden text-sm text-ember sm:col-span-2" role="alert"></p>
+
+    <div class="sm:col-span-2">
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">Send inquiry</button>
+    </div>
+  </form>
+
+  <div id="event-success" class="hidden border border-brass/40 bg-char/60 p-10 text-center">
+    <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-brass text-brass">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3 class="display text-3xl text-bone">Inquiry sent</h3>
+    <p class="mx-auto mt-3 max-w-md text-sm text-bone-mute">Our events team will reach out within one business day to craft your evening.</p>
+    <button type="button" id="event-reset" class="btn btn-ghost mt-7">Send another</button>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("event-form") as HTMLFormElement | null;
+  const success = document.getElementById("event-success");
+  const errorEl = document.getElementById("e-error");
+  const dateInput = document.getElementById("e-date") as HTMLInputElement | null;
+  if (dateInput) dateInput.min = new Date().toISOString().split("T")[0];
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      errorEl?.classList.remove("hidden");
+      if (errorEl) errorEl.textContent = "Please complete the required fields.";
+      form.reportValidity();
+      return;
+    }
+    errorEl?.classList.add("hidden");
+    // TODO: replace with a real submission (fetch POST to your CRM / email).
+    form.classList.add("hidden");
+    success?.classList.remove("hidden");
+    success?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  document.getElementById("event-reset")?.addEventListener("click", () => {
+    form?.reset();
+    success?.classList.add("hidden");
+    form?.classList.remove("hidden");
+  });
+</script>

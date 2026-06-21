@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import MenuSection from "../components/MenuSection.astro";
+import { menu, tagLegend } from "../data/menu";
+---
+
+<Base
+  title="Menu"
+  description="Prime and dry-aged beef over white-oak embers, a raw bar from Florida waters, and sides worth the trip. The BRASA menu, cut by cut."
+>
+  <PageHero
+    eyebrow="The menu"
+    title="Fire,<br/>cut by cut."
+    intro="Prime and dry-aged beef over white-oak embers, a raw bar from Florida waters, and sides worth the trip. Our menu shifts with the season and the catch."
+  />
+
+  <!-- In-page category nav -->
+  <nav
+    class="sticky top-[4.25rem] z-30 border-b border-smoke/40 bg-ink/90 backdrop-blur"
+    aria-label="Menu sections"
+  >
+    <div class="mx-auto flex max-w-7xl gap-7 overflow-x-auto px-5 py-4 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {
+        menu.map((g) => (
+          <a
+            href={`#${g.id}`}
+            class="link-underline shrink-0 whitespace-nowrap font-mono text-[0.7rem] uppercase tracking-[0.14em] text-bone-mute transition-colors hover:text-brass"
+          >
+            {g.title}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
+  <div class="mx-auto max-w-7xl space-y-24 px-5 py-20 sm:px-8 sm:py-24">
+    {menu.map((g) => <MenuSection group={g} />)}
+
+    <div class="border-t border-smoke/40 pt-10">
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          Object.entries(tagLegend).map(([k, v]) => (
+            <span class="font-mono text-[0.64rem] uppercase tracking-[0.1em] text-bone-mute">
+              <span class="text-brass">{k}</span> — {v}
+            </span>
+          ))
+        }
+      </div>
+      <p class="mt-6 max-w-2xl text-sm italic leading-relaxed text-bone-mute">
+        Prices in USD. MP = market price. A 20% service charge is added to parties
+        of six or more. Consuming raw or undercooked meats may increase your risk
+        of foodborne illness.
+      </p>
+      <a href="/reservations" class="btn btn-primary mt-8">Reserve a table</a>
+    </div>
+  </div>
+</Base>

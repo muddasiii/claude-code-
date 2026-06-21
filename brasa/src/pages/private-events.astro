@@ -1,0 +1,98 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import EventForm from "../components/EventForm.astro";
+import Placeholder from "../components/Placeholder.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+
+const spaces = [
+  {
+    name: "The Cellar",
+    capacity: "Up to 24 seated",
+    description: "A private room wrapped in brass and bottles, with its own sound and service.",
+    variant: "a" as const,
+  },
+  {
+    name: "The Hearth Room",
+    capacity: "Up to 40 seated · 60 standing",
+    description: "Semi-private, steps from the open fire — the heart of the room is yours.",
+    variant: "d" as const,
+  },
+  {
+    name: "Full Buyout",
+    capacity: "Up to 160 seated · 250 reception",
+    description: "The whole house, the whole fire, the whole night. Custom menus throughout.",
+    variant: "c" as const,
+  },
+];
+
+const included = [
+  "A dedicated event lead from planning through service",
+  "Custom multi-course or family-style fire menus",
+  "Sommelier-paired wine & craft cocktail programs",
+  "AV, florals, and bespoke menu printing on request",
+];
+---
+
+<Base
+  title="Private Events"
+  description="Host private dinners, corporate events, weddings, and buyouts at BRASA in Miami's Design District."
+>
+  <PageHero
+    eyebrow="Private events"
+    title="Gather<br/>around the fire."
+    intro="From intimate cellar dinners to full buyouts, we build the evening around your table — and our fire."
+  />
+
+  <!-- Spaces -->
+  <section class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">
+    <SectionHeading eyebrow="The spaces" title="Three ways<br/>to host." />
+    <div class="mt-14 grid gap-5 md:grid-cols-3">
+      {
+        spaces.map((s) => (
+          <article
+            data-reveal
+            class="zoom group flex flex-col border border-smoke/50 bg-char/40 transition-colors duration-500 hover:border-brass/50"
+          >
+            <div class="overflow-hidden">
+              <Placeholder ratio="4/3" variant={s.variant} label={s.name} />
+            </div>
+            <div class="flex flex-1 flex-col p-7">
+              <h3 class="display text-2xl text-bone transition-colors duration-300 group-hover:text-brass">
+                {s.name}
+              </h3>
+              <p class="mt-2 font-mono text-[0.68rem] uppercase tracking-[0.15em] text-brass">{s.capacity}</p>
+              <p class="mt-4 text-sm leading-relaxed text-bone-mute">{s.description}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Inquiry -->
+  <section class="border-t border-smoke/40 bg-char/40">
+    <div class="mx-auto grid max-w-7xl gap-14 px-5 py-24 sm:px-8 sm:py-28 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+      <div>
+        <SectionHeading eyebrow="What's included" title="Handled,<br/>end to end." />
+        <ul class="mt-8 space-y-4">
+          {
+            included.map((item) => (
+              <li data-reveal class="flex gap-3 text-bone-dim">
+                <span class="mt-1 text-brass" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div data-reveal data-reveal-delay="1">
+        <h3 class="display mb-8 text-2xl text-bone">Tell us about your event</h3>
+        <EventForm />
+      </div>
+    </div>
+  </section>
+</Base>

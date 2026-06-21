@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brasamiami.com/sitemap-index.xml

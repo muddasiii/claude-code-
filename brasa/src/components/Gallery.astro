@@ -1,0 +1,133 @@
+---
+// Masonry gallery with a native <dialog> lightbox.
+// Placeholders are CSS-only; swap each cell for a real <img loading="lazy"> in production.
+const items = [
+  { label: "The ember cart", variant: "d", ratio: "4/5" },
+  { label: "Bone-in ribeye, 40-day", variant: "a", ratio: "4/3" },
+  { label: "Raw bar, Florida waters", variant: "b", ratio: "1/1" },
+  { label: "The dining room", variant: "c", ratio: "4/3" },
+  { label: "White-oak fire", variant: "d", ratio: "4/5" },
+  { label: "Tableside carving", variant: "a", ratio: "1/1" },
+  { label: "Cellar & brass", variant: "c", ratio: "4/5" },
+  { label: "Stone crab, in season", variant: "b", ratio: "4/3" },
+  { label: "Negroni, smoked", variant: "a", ratio: "1/1" },
+] as const;
+
+const grads: Record<string, string> = {
+  a: "radial-gradient(120% 110% at 28% 18%, #2a2018 0%, #14110c 55%, #0b0908 100%)",
+  b: "radial-gradient(110% 110% at 72% 30%, #38271a 0%, #17120d 52%, #0b0908 100%)",
+  c: "linear-gradient(150deg, #1d160f 0%, #0c0a08 72%)",
+  d: "radial-gradient(130% 120% at 50% 0%, #3a2415 0%, #160f0a 60%, #0a0807 100%)",
+};
+---
+
+<div class="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+  {
+    items.map((item, i) => (
+      <button
+        type="button"
+        class="zoom group relative block w-full cursor-pointer overflow-hidden border border-smoke/40 transition-colors duration-500 hover:border-brass/50"
+        data-lb
+        data-index={i}
+        data-variant={item.variant}
+        data-label={item.label}
+        aria-label={`Open image: ${item.label}`}
+      >
+        <div
+          class="zoom-target relative grain"
+          style={`aspect-ratio:${item.ratio}; background-image:${grads[item.variant]}`}
+        >
+          <span class="ember-glow" style="width:60%;height:60%;left:20%;top:25%;opacity:.4" />
+        </div>
+        <span class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] flex items-center gap-2 bg-linear-to-t from-ink/85 to-transparent px-4 pb-3 pt-10 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-bone-dim opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="text-brass">
+            <path d="M21 21l-4.3-4.3M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" stroke-linecap="round" />
+          </svg>
+          {item.label}
+        </span>
+      </button>
+    ))
+  }
+</div>
+
+<dialog
+  id="lightbox"
+  class="m-auto w-[min(92vw,1000px)] bg-transparent p-0"
+  aria-label="Image viewer"
+>
+  <div class="relative">
+    <div
+      id="lb-image"
+      class="grain relative w-full border border-smoke/60"
+      style="aspect-ratio:3/2"
+    >
+      <div class="ember-glow" style="width:55%;height:55%;left:22%;top:22%;opacity:.5"></div>
+    </div>
+    <div class="mt-4 flex items-center justify-between">
+      <p id="lb-caption" class="font-mono text-xs uppercase tracking-[0.2em] text-bone-dim"></p>
+      <div class="flex gap-2">
+        <button type="button" id="lb-prev" class="flex h-11 w-11 items-center justify-center rounded-full border border-smoke text-bone transition-colors hover:border-brass hover:text-brass" aria-label="Previous image">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" id="lb-next" class="flex h-11 w-11 items-center justify-center rounded-full border border-smoke text-bone transition-colors hover:border-brass hover:text-brass" aria-label="Next image">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" id="lb-close" class="flex h-11 w-11 items-center justify-center rounded-full border border-smoke text-bone transition-colors hover:border-ember hover:text-ember" aria-label="Close viewer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const grads: Record<string, string> = {
+    a: "radial-gradient(120% 110% at 28% 18%, #2a2018 0%, #14110c 55%, #0b0908 100%)",
+    b: "radial-gradient(110% 110% at 72% 30%, #38271a 0%, #17120d 52%, #0b0908 100%)",
+    c: "linear-gradient(150deg, #1d160f 0%, #0c0a08 72%)",
+    d: "radial-gradient(130% 120% at 50% 0%, #3a2415 0%, #160f0a 60%, #0a0807 100%)",
+  };
+  const dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
+  const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-lb]"));
+  const lbImage = document.getElementById("lb-image");
+  const lbCaption = document.getElementById("lb-caption");
+  let current = 0;
+
+  const render = (i: number) => {
+    const el = triggers[i];
+    if (!el || !lbImage || !lbCaption) return;
+    current = i;
+    const variant = el.dataset.variant ?? "a";
+    lbImage.style.backgroundImage = grads[variant];
+    lbCaption.textContent = `${el.dataset.label ?? ""} · ${i + 1} / ${triggers.length}`;
+  };
+
+  triggers.forEach((t, i) =>
+    t.addEventListener("click", () => {
+      render(i);
+      dialog?.showModal();
+    }),
+  );
+  document.getElementById("lb-close")?.addEventListener("click", () => dialog?.close());
+  document.getElementById("lb-prev")?.addEventListener("click", () =>
+    render((current - 1 + triggers.length) % triggers.length),
+  );
+  document.getElementById("lb-next")?.addEventListener("click", () =>
+    render((current + 1) % triggers.length),
+  );
+  dialog?.addEventListener("click", (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!dialog?.open) return;
+    if (e.key === "ArrowRight") render((current + 1) % triggers.length);
+    if (e.key === "ArrowLeft") render((current - 1 + triggers.length) % triggers.length);
+  });
+</script>
+
+<style is:global>
+  #lightbox::backdrop {
+    background: rgba(12, 10, 9, 0.92);
+    backdrop-filter: blur(4px);
+  }
+</style>

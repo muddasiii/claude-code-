@@ -1,0 +1,143 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Active nav path for aria-current */
+  path?: string;
+}
+
+const {
+  title,
+  description = site.description,
+  path = Astro.url.pathname,
+} = Astro.props;
+
+const fullTitle = title
+  ? `${title} — ${site.name}`
+  : `${site.name} — ${site.tagline}, ${site.city}`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: site.name,
+  description: site.description,
+  servesCuisine: ["Steakhouse", "American", "Seafood"],
+  priceRange: "$$$$",
+  telephone: site.phone,
+  url: site.url,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.line1,
+    addressLocality: "Miami",
+    addressRegion: "FL",
+    postalCode: "33137",
+    addressCountry: "US",
+  },
+  acceptsReservations: true,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c0a09" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, site.url).href} />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={new URL(path, site.url).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fonts: Fraunces (display, optical) + Inter (body) + Space Mono (spec) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    />
+
+    <!-- Add `js` before paint so no-JS / reduced-motion users always see content -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-brass focus:px-4 focus:py-2 focus:text-ink"
+      >Skip to content</a
+    >
+
+    <Nav path={path} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      // ---- Scroll reveals -------------------------------------------------
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if ("IntersectionObserver" in window && reveals.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      // ---- Navbar: solid-on-scroll + mobile menu --------------------------
+      const header = document.getElementById("site-header");
+      const onScroll = () => {
+        if (!header) return;
+        header.classList.toggle("is-scrolled", window.scrollY > 24);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      const toggle = document.getElementById("menu-toggle");
+      const panel = document.getElementById("mobile-menu");
+      const closeMenu = () => {
+        toggle?.setAttribute("aria-expanded", "false");
+        panel?.setAttribute("data-open", "false");
+        document.body.style.removeProperty("overflow");
+      };
+      toggle?.addEventListener("click", () => {
+        const open = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!open));
+        panel?.setAttribute("data-open", String(!open));
+        document.body.style.overflow = open ? "" : "hidden";
+      });
+      panel?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+      });
+    </script>
+  </body>
+</html>
