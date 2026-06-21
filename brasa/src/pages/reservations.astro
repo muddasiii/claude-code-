@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import ReservationForm from "../components/ReservationForm.astro";
 import { site } from "../data/site";
+import { url } from "../lib/url";
 
 const goodToKnow = [
   "Reservations are recommended. We hold a handful of seats at the bar for walk-ins each night.",
@@ -60,7 +61,7 @@ const goodToKnow = [
           <p class="text-sm text-bone-dim">
             For 9 or more, call
             <a href={site.phoneHref} class="text-brass link-underline">{site.phone}</a>
-            or explore <a href="/private-events" class="text-brass link-underline">private events</a>.
+            or explore <a href={url("/private-events")} class="text-brass link-underline">private events</a>.
           </p>
         </div>
 

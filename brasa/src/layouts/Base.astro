@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { site } from "../data/site";
+import { url } from "../lib/url";
 
 interface Props {
   title?: string;
@@ -20,6 +21,8 @@ const {
 const fullTitle = title
   ? `${title} — ${site.name}`
   : `${site.name} — ${site.tagline}, ${site.city}`;
+
+const canonical = new URL(path, Astro.site ?? site.url).href;
 
 const schema = {
   "@context": "https://schema.org",
@@ -50,17 +53,17 @@ const schema = {
     <meta name="theme-color" content="#0c0a09" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(path, site.url).href} />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={new URL(path, site.url).href} />
+    <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
 
     <!-- Fonts: Fraunces (display, optical) + Inter (body) + Space Mono (spec) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

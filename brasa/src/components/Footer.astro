@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import { url } from "../lib/url";
 
 const icons: Record<string, string> = {
   instagram:
@@ -24,13 +25,13 @@ const year = new Date().getFullYear();
           The fire is lit. <span class="text-brass">Join us.</span>
         </h2>
       </div>
-      <a href="/reservations" class="btn btn-primary shrink-0">Book a table</a>
+      <a href={url("/reservations")} class="btn btn-primary shrink-0">Book a table</a>
     </div>
 
     <!-- Columns -->
     <div class="grid grid-cols-2 gap-10 py-14 sm:grid-cols-3 lg:grid-cols-4">
       <div class="col-span-2 sm:col-span-1">
-        <a href="/" class="display text-2xl tracking-[0.18em] text-bone">BRASA</a>
+        <a href={url("/")} class="display text-2xl tracking-[0.18em] text-bone">BRASA</a>
         <p class="mt-4 max-w-xs text-sm text-bone-mute">
           {site.tagline} in the heart of Miami's Design District. Prime cuts, white-oak embers, Florida waters.
         </p>
@@ -41,7 +42,7 @@ const year = new Date().getFullYear();
         <ul class="space-y-2.5 text-sm">
           {site.nav.map((l) => (
             <li>
-              <a href={l.href} class="text-bone-dim transition-colors hover:text-brass">{l.label}</a>
+              <a href={url(l.href)} class="text-bone-dim transition-colors hover:text-brass">{l.label}</a>
             </li>
           ))}
         </ul>

@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import MenuSection from "../components/MenuSection.astro";
 import { menu, tagLegend } from "../data/menu";
+import { url } from "../lib/url";
 ---
 
 <Base
@@ -52,7 +53,7 @@ import { menu, tagLegend } from "../data/menu";
         of six or more. Consuming raw or undercooked meats may increase your risk
         of foodborne illness.
       </p>
-      <a href="/reservations" class="btn btn-primary mt-8">Reserve a table</a>
+      <a href={url("/reservations")} class="btn btn-primary mt-8">Reserve a table</a>
     </div>
   </div>
 </Base>

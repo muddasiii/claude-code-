@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Tailwind v4 is wired via PostCSS (postcss.config.mjs) rather than the Vite
-// plugin, to stay compatible with Astro 6's rolldown-based Vite.
+// Deployed to GitHub Pages at https://<user>.github.io/claude-code-/
+// `base` is the repo name. If you move this to its own repo or to
+// Vercel/Netlify (served at the domain root), set base back to '/'.
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://brasamiami.com',
+  site: 'https://muddasiii.github.io',
+  base: '/claude-code-/',
 });

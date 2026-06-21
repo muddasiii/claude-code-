@@ -1,12 +1,16 @@
 ---
 import { site } from "../data/site";
+import { url } from "../lib/url";
 interface Props {
   path?: string;
 }
 const { path = "/" } = Astro.props;
 const links = site.nav.filter((n) => n.href !== "/reservations");
-const isActive = (href: string) =>
-  href === "/" ? path === "/" : path.startsWith(href);
+const isActive = (href: string) => {
+  const p = path.replace(/\/$/, "");
+  const t = url(href).replace(/\/$/, "");
+  return href === "/" ? p === t : p.startsWith(t);
+};
 ---
 
 <header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
@@ -15,7 +19,7 @@ const isActive = (href: string) =>
     aria-label="Primary"
   >
     <!-- Wordmark -->
-    <a href="/" class="group flex items-baseline gap-2" aria-label={`${site.name} home`}>
+    <a href={url("/")} class="group flex items-baseline gap-2" aria-label={`${site.name} home`}>
       <span class="display text-2xl font-medium tracking-[0.18em] text-bone">BRASA</span>
       <span
         class="hidden text-ember transition-transform duration-500 group-hover:rotate-12 sm:block"
@@ -34,7 +38,7 @@ const isActive = (href: string) =>
       {
         links.map((l) => (
           <a
-            href={l.href}
+            href={url(l.href)}
             class="link-underline text-sm tracking-wide text-bone-dim transition-colors hover:text-bone"
             aria-current={isActive(l.href) ? "page" : undefined}
           >
@@ -42,7 +46,7 @@ const isActive = (href: string) =>
           </a>
         ))
       }
-      <a href="/reservations" class="btn btn-primary">Reserve</a>
+      <a href={url("/reservations")} class="btn btn-primary">Reserve</a>
     </div>
 
     <!-- Mobile toggle -->
@@ -77,7 +81,7 @@ const isActive = (href: string) =>
       {
         site.nav.map((l, i) => (
           <a
-            href={l.href}
+            href={url(l.href)}
             class="display border-b border-smoke/50 py-5 text-4xl text-bone transition-colors hover:text-brass"
             style={`transition-delay:${i * 40}ms`}
             aria-current={isActive(l.href) ? "page" : undefined}

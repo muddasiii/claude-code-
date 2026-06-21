@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { url } from "../lib/url";
 ---
 
 <Base title="Page not found">
@@ -12,7 +13,7 @@ import Base from "../layouts/Base.astro";
       <p class="mx-auto mt-6 max-w-md text-bone-dim">
         The page you're after has left the pass. Let's get you back to the fire.
       </p>
-      <a href="/" class="btn btn-primary mt-10">Back to BRASA</a>
+      <a href={url("/")} class="btn btn-primary mt-10">Back to BRASA</a>
     </div>
   </section>
 </Base>
