@@ -1,0 +1,21 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+}
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-smoke/40">
+  <div class="ember-glow" style="width:48%;height:150%;left:56%;top:-32%;opacity:.5"></div>
+  <div class="grain absolute inset-0"></div>
+  <div class="relative mx-auto max-w-7xl px-5 pb-16 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
+    {eyebrow && <p class="rise eyebrow mb-5">{eyebrow}</p>}
+    <h1 class="rise rise-1 display max-w-4xl text-[2.9rem] leading-[1.02] sm:text-7xl">
+      <Fragment set:html={title} />
+    </h1>
+    {intro && <p class="rise rise-2 mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">{intro}</p>}
+    <div class="draw sear-line mt-10 max-w-[14rem]"></div>
+  </div>
+</section>

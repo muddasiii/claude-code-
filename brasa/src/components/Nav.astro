@@ -1,0 +1,130 @@
+---
+import { site } from "../data/site";
+import { url } from "../lib/url";
+interface Props {
+  path?: string;
+}
+const { path = "/" } = Astro.props;
+const links = site.nav.filter((n) => n.href !== "/reservations");
+const isActive = (href: string) => {
+  const p = path.replace(/\/$/, "");
+  const t = url(href).replace(/\/$/, "");
+  return href === "/" ? p === t : p.startsWith(t);
+};
+---
+
+<header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:py-6"
+    aria-label="Primary"
+  >
+    <!-- Wordmark -->
+    <a href={url("/")} class="group flex items-baseline gap-2" aria-label={`${site.name} home`}>
+      <span class="display text-2xl font-medium tracking-[0.18em] text-bone">BRASA</span>
+      <span
+        class="hidden text-ember transition-transform duration-500 group-hover:rotate-12 sm:block"
+        aria-hidden="true"
+      >
+        <svg width="14" height="18" viewBox="0 0 14 18" fill="currentColor">
+          <path
+            d="M7 0c1 3-1.5 4-1.5 6.5C5.5 8 6.5 9 6.5 9S4 8.5 3 6C1.5 8 0 9.8 0 12.2 0 15.4 3.1 18 7 18s7-2.6 7-5.8C14 7 8.5 6 7 0Z"
+          ></path>
+        </svg>
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden items-center gap-9 md:flex">
+      {
+        links.map((l) => (
+          <a
+            href={url(l.href)}
+            class="link-underline text-sm tracking-wide text-bone-dim transition-colors hover:text-bone"
+            aria-current={isActive(l.href) ? "page" : undefined}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a href={url("/reservations")} class="btn btn-primary">Reserve</a>
+    </div>
+
+    <!-- Mobile toggle -->
+    <button
+      id="menu-toggle"
+      class="relative z-50 flex h-11 w-11 items-center justify-center text-bone md:hidden"
+      aria-label="Open menu"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <span class="icon-open">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <span class="icon-close">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"></path>
+        </svg>
+      </span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    data-open="false"
+    class="fixed inset-0 z-40 flex flex-col bg-ink md:hidden"
+  >
+    <div class="grain relative flex flex-1 flex-col justify-center gap-2 px-8">
+      <div class="ember-glow" style="width:70%;height:40%;left:15%;bottom:8%"></div>
+      {
+        site.nav.map((l, i) => (
+          <a
+            href={url(l.href)}
+            class="display border-b border-smoke/50 py-5 text-4xl text-bone transition-colors hover:text-brass"
+            style={`transition-delay:${i * 40}ms`}
+            aria-current={isActive(l.href) ? "page" : undefined}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <div class="mt-8 space-y-1">
+        <a href={site.phoneHref} class="block font-mono text-sm text-bone-mute hover:text-brass">
+          {site.phone}
+        </a>
+        <p class="font-mono text-xs leading-relaxed text-bone-mute">{site.address.line1}<br />{site.address.line2}</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  #site-header.is-scrolled {
+    background-color: color-mix(in srgb, var(--color-char) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-smoke) 60%, transparent);
+  }
+  #menu-toggle .icon-close { display: none; }
+  #menu-toggle[aria-expanded="true"] .icon-open { display: none; }
+  #menu-toggle[aria-expanded="true"] .icon-close { display: inline-flex; }
+
+  #mobile-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.4s var(--ease-out-soft),
+      transform 0.4s var(--ease-out-soft),
+      visibility 0s linear 0.4s;
+  }
+  #mobile-menu[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 0.4s var(--ease-out-soft),
+      transform 0.4s var(--ease-out-soft);
+  }
+</style>

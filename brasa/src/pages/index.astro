@@ -1,0 +1,232 @@
+---
+import Base from "../layouts/Base.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CutCard from "../components/CutCard.astro";
+import Placeholder from "../components/Placeholder.astro";
+import { site } from "../data/site";
+import { url } from "../lib/url";
+
+const marquee = [
+  "40-Day Dry-Aged",
+  "White-Oak Fire",
+  "Florida Raw Bar",
+  "Prime & Wagyu",
+  "Tableside Carving",
+  "Design District",
+];
+
+const cuts = [
+  { name: "Bone-In Ribeye", detail: "20 oz · 40-day dry-aged", price: "84", description: "Marbled, nutty, unapologetic — our most-ordered cut.", variant: "a" as const },
+  { name: "The Tomahawk", detail: "40 oz · for two", price: "165", description: "Carved tableside over the ember cart.", variant: "d" as const },
+  { name: "Picanha", detail: "12 oz · coal-roasted", price: "54", description: "Brazilian cap steak, chimichurri, sea salt.", variant: "b" as const },
+  { name: "A5 Wagyu", detail: "4 oz · Miyazaki", price: "MP", description: "Seared on binchotan. Order with reverence.", variant: "c" as const },
+];
+
+const press = [
+  { quote: "The best fire in Miami right now — and it isn't close.", source: "Miami New Times" },
+  { quote: "A steakhouse with the soul of a Latin grill and the polish of a grand hotel.", source: "Eater Miami" },
+  { quote: "That 40-day ribeye is worth the flight.", source: "Condé Nast Traveler" },
+];
+
+const galleryTeaser = [
+  { label: "The ember cart", variant: "d" as const, ratio: "3/4" },
+  { label: "Bone-in ribeye", variant: "a" as const, ratio: "3/4" },
+  { label: "Raw bar", variant: "b" as const, ratio: "3/4" },
+  { label: "The dining room", variant: "c" as const, ratio: "3/4" },
+];
+---
+
+<Base>
+  <!-- ================= HERO ================= -->
+  <section class="relative flex min-h-[100svh] items-center overflow-hidden">
+    <div class="ember-glow" style="width:70%;height:80%;left:30%;top:18%;opacity:.65"></div>
+    <div class="grain absolute inset-0"></div>
+    <div
+      class="absolute inset-0"
+      style="background:radial-gradient(120% 90% at 70% 30%, rgba(210,84,43,.10), transparent 55%), linear-gradient(180deg, #0c0a09 0%, #0c0a09 60%, #100c0a 100%)"
+    >
+    </div>
+
+    <div class="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 pb-20 pt-32 sm:px-8 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <p class="rise eyebrow mb-6">{site.tagline} · {site.city}, FL</p>
+        <h1 class="rise rise-1 display text-[3.4rem] leading-[0.98] sm:text-7xl lg:text-[5.6rem]">
+          Fire is the<br /><span class="italic text-brass">oldest</span> luxury.
+        </h1>
+        <p class="rise rise-2 mt-7 max-w-md text-lg leading-relaxed text-bone-dim">
+          Prime and dry-aged cuts seared over white-oak embers. A raw bar pulled
+          from Florida waters. A cellar built for the heat — in the heart of the
+          Design District.
+        </p>
+        <div class="rise rise-3 mt-10 flex flex-wrap items-center gap-4">
+          <a href={url("/reservations")} class="btn btn-primary">Reserve a table</a>
+          <a href={url("/menu")} class="btn btn-ghost">View the menu</a>
+        </div>
+      </div>
+
+      <div class="rise rise-3 lg:col-span-5">
+        <div class="zoom overflow-hidden border border-smoke/50">
+          <Placeholder ratio="4/5" variant="d" label="Over the embers" />
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 sm:block" aria-hidden="true">
+      <div class="flex flex-col items-center gap-2 text-bone-mute">
+        <span class="font-mono text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
+        <span class="h-10 w-px bg-gradient-to-b from-brass to-transparent"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MARQUEE ================= -->
+  <div class="marquee relative flex overflow-hidden border-y border-smoke/40 bg-char py-5">
+    <div class="marquee-track flex shrink-0 items-center gap-10 whitespace-nowrap pr-10">
+      {
+        [...marquee, ...marquee].map((m) => (
+          <span class="flex items-center gap-10">
+            <span class="display text-xl text-bone-dim sm:text-2xl">{m}</span>
+            <span class="text-ember" aria-hidden="true">✦</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- ================= PHILOSOPHY ================= -->
+  <section class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <div class="zoom order-2 overflow-hidden border border-smoke/50 lg:order-1">
+        <Placeholder ratio="4/3" variant="a" label="White-oak coals" />
+      </div>
+      <div class="order-1 lg:order-2">
+        <SectionHeading
+          eyebrow="Our fire"
+          title={`We cook the way it was<br/>always meant to be done.`}
+        />
+        <div class="mt-6 max-w-xl space-y-5 text-bone-dim" data-reveal data-reveal-delay="2">
+          <p>
+            Everything at BRASA passes over live fire. White-oak burns down to
+            embers in our open hearth, and the cuts go on by hand — judged by
+            smell, sound, and the give of the meat, not a timer.
+          </p>
+          <p>
+            Our beef is sourced from a single family ranch, dry-aged in-house up
+            to forty-five days, and finished with nothing more than smoked salt
+            and patience.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SIGNATURE CUTS ================= -->
+  <section class="border-t border-smoke/40 bg-char/40">
+    <div class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading eyebrow="From the fire" title="The cuts we're<br/>known for." />
+        <a href={url("/menu")} class="btn btn-ghost" data-reveal>See the full menu</a>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {cuts.map((c) => <CutCard {...c} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section class="relative overflow-hidden border-t border-smoke/40">
+    <div class="ember-glow" style="width:45%;height:130%;left:-8%;top:-20%;opacity:.45"></div>
+    <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <SectionHeading
+          eyebrow="The experience"
+          title={`The ember cart<br/>comes to you.`}
+        />
+        <p class="mt-6 max-w-xl text-bone-dim" data-reveal data-reveal-delay="2">
+          For the larger cuts, the fire travels. Our ember cart is wheeled to the
+          table, where your steak is carved, seasoned, and plated in front of you
+          — equal parts dinner and theatre.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4" data-reveal data-reveal-delay="3">
+          <a href={url("/private-events")} class="btn btn-ghost">Private dining</a>
+          <a href={url("/gallery")} class="btn btn-ghost">See the room</a>
+        </div>
+      </div>
+      <div class="zoom overflow-hidden border border-smoke/50">
+        <Placeholder ratio="3/2" variant="d" label="Carving, tableside" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRESS ================= -->
+  <section class="border-t border-smoke/40 bg-char/40">
+    <div class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+      <p class="eyebrow mb-12 text-center" data-reveal>Said about us</p>
+      <div class="grid gap-10 md:grid-cols-3 md:gap-8">
+        {
+          press.map((p, i) => (
+            <figure data-reveal data-reveal-delay={(i + 1) as 1 | 2 | 3} class="text-center md:text-left">
+              <blockquote class="display text-2xl leading-snug text-bone">“{p.quote}”</blockquote>
+              <figcaption class="mt-4 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-brass">
+                {p.source}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALLERY TEASER ================= -->
+  <section class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHeading eyebrow="The room" title="A little<br/>atmosphere." />
+      <a href={url("/gallery")} class="btn btn-ghost" data-reveal>Open the gallery</a>
+    </div>
+    <div class="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {
+        galleryTeaser.map((g, i) => (
+          <a
+            href={url("/gallery")}
+            data-reveal
+            data-reveal-delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
+            class="zoom group block overflow-hidden border border-smoke/40 transition-colors duration-500 hover:border-brass/50"
+          >
+            <Placeholder ratio={g.ratio} variant={g.variant} label={g.label} />
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ================= VISIT ================= -->
+  <section class="border-t border-smoke/40 bg-char/40">
+    <div class="mx-auto grid max-w-7xl gap-12 px-5 py-24 sm:px-8 sm:py-28 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <SectionHeading eyebrow="Visit" title="Find the fire." />
+        <dl class="mt-10 space-y-7">
+          <div data-reveal>
+            <dt class="eyebrow mb-2">Hours</dt>
+            {site.hours.map((h) => (
+              <dd class="flex justify-between gap-6 border-b border-smoke/40 py-2 text-sm">
+                <span class="text-bone-dim">{h.days}</span>
+                <span class="font-mono text-bone-mute">{h.time}</span>
+              </dd>
+            ))}
+          </div>
+          <div data-reveal data-reveal-delay="1">
+            <dt class="eyebrow mb-2">Address</dt>
+            <dd class="text-bone-dim">{site.address.line1}, {site.address.line2}</dd>
+          </div>
+          <div data-reveal data-reveal-delay="2" class="flex flex-wrap gap-4 pt-2">
+            <a href={url("/reservations")} class="btn btn-primary">Reserve a table</a>
+            <a href={site.address.maps} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Get directions</a>
+          </div>
+        </dl>
+      </div>
+      <div class="zoom overflow-hidden border border-smoke/50">
+        <Placeholder ratio="4/3" variant="c" label="140 NE 39th St · Design District" motif="none" />
+      </div>
+    </div>
+  </section>
+</Base>

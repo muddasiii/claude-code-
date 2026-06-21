@@ -1,0 +1,19 @@
+{
+  "name": "brasa-steakhouse",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BRASA — Wood-Fired Steakhouse, Miami. Astro + Tailwind marketing site.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

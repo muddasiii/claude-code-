@@ -1,0 +1,30 @@
+---
+import Placeholder from "./Placeholder.astro";
+interface Props {
+  name: string;
+  detail: string;
+  price: string;
+  description: string;
+  variant?: "a" | "b" | "c" | "d";
+}
+const { name, detail, price, description, variant = "a" } = Astro.props;
+---
+
+<article
+  data-reveal
+  class="zoom group flex flex-col border border-smoke/50 bg-char/40 transition-colors duration-500 hover:border-brass/50"
+>
+  <div class="overflow-hidden">
+    <Placeholder ratio="5/4" variant={variant} label={name} />
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class="display text-2xl text-bone transition-colors duration-300 group-hover:text-brass">
+        {name}
+      </h3>
+      <span class="whitespace-nowrap font-mono text-sm text-brass">{price}</span>
+    </div>
+    <p class="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.15em] text-bone-mute">{detail}</p>
+    <p class="mt-3 text-sm leading-relaxed text-bone-mute">{description}</p>
+  </div>
+</article>

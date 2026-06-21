@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import { url } from "../lib/url";
+---
+
+<Base title="Page not found">
+  <section class="relative flex min-h-[80svh] items-center overflow-hidden">
+    <div class="ember-glow" style="width:55%;height:90%;left:25%;top:10%;opacity:.5"></div>
+    <div class="grain absolute inset-0"></div>
+    <div class="relative mx-auto max-w-2xl px-5 py-32 text-center">
+      <p class="eyebrow mb-5">Error 404</p>
+      <h1 class="display text-5xl sm:text-7xl">This table<br />doesn't exist.</h1>
+      <p class="mx-auto mt-6 max-w-md text-bone-dim">
+        The page you're after has left the pass. Let's get you back to the fire.
+      </p>
+      <a href={url("/")} class="btn btn-primary mt-10">Back to BRASA</a>
+    </div>
+  </section>
+</Base>

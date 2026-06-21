@@ -1,0 +1,47 @@
+---
+import type { MenuGroup } from "../data/menu";
+interface Props {
+  group: MenuGroup;
+}
+const { group } = Astro.props;
+---
+
+<section id={group.id} class="scroll-mt-28">
+  <div data-reveal class="mb-6 border-b border-smoke/50 pb-4">
+    <h3 class="display text-3xl sm:text-4xl">{group.title}</h3>
+  </div>
+  {group.note && <p data-reveal class="mb-9 max-w-2xl text-sm italic text-bone-mute">{group.note}</p>}
+
+  <ul class="grid gap-x-14 gap-y-8 md:grid-cols-2">
+    {
+      group.items.map((item, i) => (
+        <li data-reveal data-reveal-delay={((i % 2) + 1) as 1 | 2} class="group">
+          <div class="flex items-baseline gap-3">
+            <h4 class="text-lg font-medium text-bone transition-colors duration-300 group-hover:text-brass">
+              {item.name}
+            </h4>
+            <span class="h-px flex-1 bg-smoke/60" aria-hidden="true" />
+            <span class="whitespace-nowrap font-mono text-sm text-brass">{item.price}</span>
+          </div>
+          {item.detail && (
+            <p class="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.15em] text-bone-mute">
+              {item.detail}
+            </p>
+          )}
+          {item.description && (
+            <p class="mt-1.5 max-w-md text-sm leading-relaxed text-bone-mute">{item.description}</p>
+          )}
+          {item.tags && (
+            <div class="mt-2.5 flex flex-wrap gap-1.5">
+              {item.tags.map((t) => (
+                <span class="rounded-sm border border-smoke px-1.5 py-0.5 font-mono text-[0.58rem] tracking-[0.15em] text-bone-mute">
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>

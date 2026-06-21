@@ -1,0 +1,53 @@
+---
+// Self-contained image placeholder (no network requests).
+// Replace with: <img src="..." alt="..." loading="lazy" width="..." height="..." class="zoom-target h-full w-full object-cover" />
+interface Props {
+  label?: string;
+  ratio?: string;
+  variant?: "a" | "b" | "c" | "d";
+  motif?: "flame" | "none";
+  class?: string;
+}
+const {
+  label,
+  ratio = "4/3",
+  variant = "a",
+  motif = "flame",
+  class: className = "",
+} = Astro.props;
+
+const grads: Record<string, string> = {
+  a: "radial-gradient(120% 110% at 28% 18%, #2a2018 0%, #14110c 55%, #0b0908 100%)",
+  b: "radial-gradient(110% 110% at 72% 30%, #38271a 0%, #17120d 52%, #0b0908 100%)",
+  c: "linear-gradient(150deg, #1d160f 0%, #0c0a08 72%)",
+  d: "radial-gradient(130% 120% at 50% 0%, #3a2415 0%, #160f0a 60%, #0a0807 100%)",
+};
+---
+
+<div
+  class={`zoom-target relative isolate grain bg-char ${className}`}
+  style={`aspect-ratio:${ratio}; background-image:${grads[variant]}; height:100%; width:100%`}
+  role="img"
+  aria-label={label ?? "Photography placeholder"}
+>
+  <div class="ember-glow" style="width:62%;height:62%;left:19%;top:24%;opacity:.45"></div>
+  {
+    motif === "flame" && (
+      <svg
+        class="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 text-brass/25"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M13 2c.9 3.4-1.8 4.7-2.6 7.4-.5 1.7.2 3.1.2 3.1s-2.2-1-3.1-3.4C5.9 11 4.6 13.2 4.6 15.5 4.6 19 7.9 22 12 22s7.4-2.7 7.4-6.5C19.4 9.5 14 8 13 2Z" />
+      </svg>
+    )
+  }
+  {
+    label && (
+      <span class="absolute bottom-3 left-4 z-[2] font-mono text-[0.62rem] uppercase tracking-[0.2em] text-bone-mute">
+        {label}
+      </span>
+    )
+  }
+</div>

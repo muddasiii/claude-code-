@@ -1,0 +1,98 @@
+---
+import { site } from "../data/site";
+import { url } from "../lib/url";
+
+const icons: Record<string, string> = {
+  instagram:
+    "M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.2 1 .47 1.4.9.43.4.7.8.9 1.4.17.4.36 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2-.2.6-.47 1-.9 1.4-.4.43-.8.7-1.4.9-.4.17-1 .36-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42-.6-.2-1-.47-1.4-.9-.43-.4-.7-.8-.9-1.4-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.2-.6.47-1 .9-1.4.4-.43.8-.7 1.4-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.7-.32.31-.52.62-.69 1.05-.12.3-.28.8-.32 1.7C3.46 8.5 3.46 8.9 3.46 12s0 3.5.07 4.7c.04.9.2 1.4.32 1.7.17.43.37.74.69 1.06.32.32.63.52 1.06.69.3.12.8.28 1.7.32 1.2.06 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.3.28-.8.32-1.7.06-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.04-.9-.2-1.4-.32-1.7a2.85 2.85 0 0 0-.69-1.05 2.85 2.85 0 0 0-1.06-.7c-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4Zm0 3.06A4.94 4.94 0 1 1 12 16.94 4.94 4.94 0 0 1 12 7.06Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.14-2.94a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z",
+  facebook:
+    "M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.52 1.5-3.91 3.78-3.91 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.9h-2.34V22c4.78-.79 8.43-4.94 8.43-9.94Z",
+  tiktok:
+    "M16.5 2h-2.9v12.6a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.16a5.6 5.6 0 1 0 4.72 5.52V8.6a6.9 6.9 0 0 0 4 1.28V7a3.9 3.9 0 0 1-2-.55 3.9 3.9 0 0 1-2-3.45Z",
+};
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden border-t border-smoke/60 bg-char">
+  <div class="ember-glow" style="width:60%;height:120%;left:-10%;top:-20%;opacity:.4"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 pb-12 pt-16 sm:px-8 sm:pt-20">
+    <!-- CTA row -->
+    <div class="flex flex-col items-start justify-between gap-8 border-b border-smoke/50 pb-14 md:flex-row md:items-end">
+      <div>
+        <p class="eyebrow mb-4">Reserve your table</p>
+        <h2 class="display max-w-xl text-4xl sm:text-5xl">
+          The fire is lit. <span class="text-brass">Join us.</span>
+        </h2>
+      </div>
+      <a href={url("/reservations")} class="btn btn-primary shrink-0">Book a table</a>
+    </div>
+
+    <!-- Columns -->
+    <div class="grid grid-cols-2 gap-10 py-14 sm:grid-cols-3 lg:grid-cols-4">
+      <div class="col-span-2 sm:col-span-1">
+        <a href={url("/")} class="display text-2xl tracking-[0.18em] text-bone">BRASA</a>
+        <p class="mt-4 max-w-xs text-sm text-bone-mute">
+          {site.tagline} in the heart of Miami's Design District. Prime cuts, white-oak embers, Florida waters.
+        </p>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">Explore</p>
+        <ul class="space-y-2.5 text-sm">
+          {site.nav.map((l) => (
+            <li>
+              <a href={url(l.href)} class="text-bone-dim transition-colors hover:text-brass">{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">Hours</p>
+        <ul class="space-y-2 text-sm text-bone-dim">
+          {site.hours.map((h) => (
+            <li class="flex flex-col">
+              <span class="text-bone-mute">{h.days}</span>
+              <span class="font-mono text-[0.8rem]">{h.time}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow mb-4">Visit</p>
+        <address class="space-y-3 text-sm not-italic text-bone-dim">
+          <p>{site.address.line1}<br />{site.address.line2}</p>
+          <p>
+            <a href={site.phoneHref} class="font-mono hover:text-brass">{site.phone}</a><br />
+            <a href={site.emailHref} class="hover:text-brass">{site.email}</a>
+          </p>
+        </address>
+        <div class="mt-5 flex gap-3">
+          {site.social.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-smoke text-bone-mute transition-colors hover:border-brass hover:text-brass"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d={icons[s.icon]}></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="flex flex-col gap-4 border-t border-smoke/50 pt-8 text-xs text-bone-mute sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.name} Steakhouse · Est. {site.established} · Miami, FL</p>
+      <p class="max-w-md leading-relaxed">
+        Consuming raw or undercooked meats may increase your risk of foodborne illness. Please enjoy responsibly.
+      </p>
+    </div>
+  </div>
+</footer>

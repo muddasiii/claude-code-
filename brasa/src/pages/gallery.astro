@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Gallery from "../components/Gallery.astro";
+---
+
+<Base
+  title="Gallery"
+  description="Inside BRASA — the open hearth, the dining room, the cuts, and the cocktails."
+>
+  <PageHero
+    eyebrow="Gallery"
+    title="The room,<br/>the fire, the plates."
+    intro="A look inside the hearth and the dining room. Tap any frame to enlarge."
+  />
+
+  <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+    <Gallery />
+  </section>
+</Base>
