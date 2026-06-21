@@ -55,6 +55,16 @@ Everything below is placeholder and clearly marked:
    currently confirm client-side. Search for `TODO:` to wire a real `fetch`
    POST, or drop in a Resy/OpenTable embed on `/reservations`.
 
+## Deploy
+
+This is a static site — it deploys anywhere.
+
+- **Vercel:** Import the repo → framework auto-detected as Astro → Deploy.
+- **Netlify:** New site from Git → `netlify.toml` already sets
+  `npm run build` → publish `dist`.
+- **GitHub Pages:** set `base` in `astro.config.mjs` to `/<repo-name>/` and add
+  a Pages Actions workflow.
+
 ## Built for performance & accessibility
 
 - Astro ships ~0 KB JS by default; the small bits of interactivity are inlined.
